@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ICustomControl } from '@shared/models/form.model';
 import { FormService } from '@shared/services/form.service';
+import { AuthService } from '@shared/services/auth.service';
+import { first } from 'rxjs/internal/operators/first';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +11,7 @@ import { FormService } from '@shared/services/form.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  private _prefix: string = 'auth.login.form.';
+  private _prefix: string = 'auth.ts.login.form.';
   controls: ICustomControl[] = [
     {
       id: 'email',
@@ -36,6 +38,7 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
 
   constructor(private _formBuilder: FormBuilder,
+              private _auth: AuthService,
               private _formService: FormService) {
   }
 
@@ -44,6 +47,6 @@ export class LoginComponent implements OnInit {
   }
 
   onLoginSubmit() {
-    console.log(this.form.value);
+    this._auth.logIn(this.form.value);
   }
 }

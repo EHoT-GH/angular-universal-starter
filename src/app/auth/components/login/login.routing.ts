@@ -7,8 +7,8 @@ const loginRoutes: Routes = [
     component: LoginComponent,
     data: {
       meta: {
-        title: 'auth.login.title',
-        description: 'auth.login.text',
+        title: 'auth.ts.login.title',
+        description: 'auth.ts.login.text',
         override: true,
       },
     }

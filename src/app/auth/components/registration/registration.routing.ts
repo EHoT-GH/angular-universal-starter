@@ -7,8 +7,8 @@ const registrationRoutes: Routes = [
     component: RegistrationComponent,
     data: {
       meta: {
-        title: 'auth.registration.title',
-        description: 'auth.registration.text',
+        title: 'auth.ts.registration.title',
+        description: 'auth.ts.registration.text',
         override: true,
       },
     }

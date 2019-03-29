@@ -61,13 +61,13 @@ enableProdMode();
 const app = express();
 // gzip
 app.use(compression());
-// cokies
+// cookies
 app.use(cookieparser());
 
 // redirects!
 const redirectowww = false;
 const redirectohttps = false;
-const wwwredirecto = true;
+const wwwredirecto = false;
 app.use((req, res, next) => {
   // for domain/index.html
   if (req.url === '/index.html') {
@@ -169,6 +169,34 @@ app.get('*', (req, res) => {
     },
   );
 });
+
+// TODO: Remove next 'USER' object in production build
+const USERS = [
+  {
+    email: 'test@example.com',
+    password: 'showmethemoney'
+  }
+];
+
+// AUTH ROUTES
+const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+const expressJwt = require('express-jwt');
+
+app.use(bodyParser.json());
+
+app.post('/api/auth', (req, res) => {
+  const body = req.body;
+
+  const user = USERS.find(u => u.email === body.email);
+  if (!user || body.password !== 'showmethemoney') {
+    return res.sendStatus(401);
+  }
+  const id = '_' + Math.random().toString(36).substr(2, 9);
+  const token = jwt.sign({userID: id}, 'poweroverwhelming', {expiresIn: '2h'});
+  res.send({token});
+});
+app.use(expressJwt({secret: 'poweroverwhelming'}).unless({path: ['/api/auth']}));
 
 app.listen(PORT, () => {
   console.log(`listening on http://localhost:${PORT}!`);

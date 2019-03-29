@@ -8,7 +8,7 @@ import { UnAuthGuard } from '@shared/guards/un-auth.guard';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
-    path: 'auth',
+    path: 'auth.ts',
     loadChildren: './auth/auth.module#AuthModule',
     canLoad: [UnAuthGuard],
   },

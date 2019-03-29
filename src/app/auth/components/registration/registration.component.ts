@@ -9,7 +9,7 @@ import { FormService } from '@shared/services/form.service';
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent implements OnInit {
-  private _prefix: string = 'auth.registration.form.';
+  private _prefix: string = 'auth.ts.registration.form.';
   controls: ICustomControl[] = [
     {
       id: 'email',

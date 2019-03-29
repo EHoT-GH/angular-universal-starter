@@ -1,12 +1,13 @@
 // angular
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, Injector, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // libs
-import { CookieService, CookieModule } from '@gorniv/ngx-universal';
+import { CookieService, CookieModule, CookieOptionsProvider } from '@gorniv/ngx-universal';
 import { TransferHttpCacheModule } from '@nguniversal/common';
+import { JwtModule } from '@auth0/angular-jwt';
 // shared
 import { SharedModule } from '@shared/shared.module';
 import { TranslatesService } from '@shared/translates';
@@ -25,6 +26,10 @@ export function initLanguage(translateService: TranslatesService): Function {
   return (): Promise<any> => translateService.initLanguage();
 }
 
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
+
 @NgModule({
   imports: [
     BrowserModule.withServerTransition({ appId: 'my-app' }),
@@ -35,6 +40,13 @@ export function initLanguage(translateService: TranslatesService): Function {
     BrowserAnimationsModule,
     CookieModule.forRoot(),
     SharedModule.forRoot(),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter,
+        whitelistedDomains: ['localhost:4000'],
+        blacklistedRoutes: ['http://localhost:4000/api/auth'],
+      },
+    }),
   ],
   declarations: [AppComponent],
   providers: [
